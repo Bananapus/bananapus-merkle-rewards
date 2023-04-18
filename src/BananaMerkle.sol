@@ -21,7 +21,7 @@ contract BananaMerkle is Ownable {
 
     function claim(uint256 amount, bytes32[] calldata proof) external {
         // Has already claimed during this period?
-        if (lastClaimOf[msg.sender] > blockHeightOfCurrentRoot) revert BananaMerkle_AlreadyClaimed();
+        if (lastClaimOf[msg.sender] >= blockHeightOfCurrentRoot) revert BananaMerkle_AlreadyClaimed();
 
         // Check if in the tree
         bytes32 msgSenderLeaf = keccak256(abi.encodePacked(msg.sender, amount));
