@@ -25,7 +25,7 @@ contract BananaMerkle is Ownable {
 
         // Check if in the tree
         bytes32 msgSenderLeaf = keccak256(abi.encodePacked(msg.sender, amount));
-        if(!MerkleProof.verify(proof, currentRoot, msgSenderLeaf)) revert BananaMerkle_NothingToClaim();
+        if(!MerkleProof.verifyCalldata(proof, currentRoot, msgSenderLeaf)) revert BananaMerkle_NothingToClaim();
 
         // Update last claimed block number
         lastClaimOf[msg.sender] = block.number;
