@@ -5,9 +5,13 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "generate": "node index.js",
+    "prove": "node prove.js"
   },
   "dependencies": {
     "@openzeppelin/merkle-tree": "^1.0.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
