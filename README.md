@@ -1,4 +1,4 @@
-# Bananapus Distributor
+# Bananapus Rewards
 
 Contracts, frontend, and merkle generator for allowing a merkle tree of recipients to claim rewards across several EVM-compatible L2s.
 
