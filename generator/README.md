@@ -2,7 +2,7 @@
 
 Given `input.json` which contains:
 
-- a list of [`ChainID`s](https://chainlist.org/) and reward totals for those chains
+- a list of [`ChainID`s](https://chainlist.org/) and reward totals for those chains (the total number of tokens being rewarded on that chain)
 - a list of recipients, and the proportion of rewards they're entitled to on each chain
 
 outputs `trees.json` containing:
@@ -40,11 +40,9 @@ Install and run with:
 # Install dependancies
 yarn
 
-# Run script
+# Generate trees.json
 yarn generate
 ```
-
-## Generate Proofs Locally
 
 To generate proofs locally, first ensure you have a properly formatted `trees.json` (as created by `yarn generate`), and then run:
 
@@ -52,4 +50,4 @@ To generate proofs locally, first ensure you have a properly formatted `trees.js
 yarn prove
 ```
 
-Which will write proofs to `proofs.json`
+Which will write proofs to `proofs.json`.
