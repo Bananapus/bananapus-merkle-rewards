@@ -1,13 +1,16 @@
 # Frontend
 
-Allows a merkle tree recipient to connect their wallet and claim Bananapus rewards across one or more EVM-compatible L2s.
-
-## Local Use
+Temporary proof of concept. Only for use with injected wallets.
 
 ```bash
-# Install dependancies
+# Install dependencies
 yarn
 
-# Local development server
+# Dev server
 yarn dev
+
+# Build to /dist
+yarn build
 ```
+
+Click `Connect`, then `Check Rewards`. Proofs will be logged to the console.

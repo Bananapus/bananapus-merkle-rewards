@@ -2,7 +2,7 @@
 
 Given `input.json` which contains:
 
-- a list of [`ChainID`s](https://chainlist.org/) and reward totals for those chains (the total number of tokens being rewarded on that chain)
+- a list of [`ChainID`s](https://chainlist.org/) and the total number of tokens being rewarded on each chain
 - a list of recipients, and the proportion of rewards they're entitled to on each chain
 
 outputs `trees.json` containing:
@@ -32,6 +32,8 @@ Prepare `input.json` with totals and recipients (this is an example).
 }
 ```
 
+In the example above, the last address (`0x2DdA8dc2f67f1eB94b250CaEFAc9De16f70c5A51`) will receive `6 / (1 + 2 + 3 + 4 + 5 + 6)`, or ~28.57% of the rewards on each chain.
+
 Be sure to surround all values with double quotes.
 
 Install and run with:
@@ -44,7 +46,9 @@ yarn
 yarn generate
 ```
 
-To generate proofs locally, first ensure you have a properly formatted `trees.json` (as created by `yarn generate`), and then run:
+## Generating Proofs Locally
+
+Ensure you have a properly formatted `trees.json` (as created by `yarn generate`), and then run:
 
 ```bash
 yarn prove
