@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity ^0.8.19;
 
-import { Test } from "forge-std/Test.sol";
+import { Test, stdJson } from "forge-std/Test.sol";
 import {BananaMerkle} from "../src/BananaMerkle.sol";
 
 contract EmptyTest_Unit is Test {
+    using stdJson for string;
     event Claimed(address indexed claimer, uint256 amount);
 
     BananaMerkle bananaMerkle;
@@ -14,9 +15,36 @@ contract EmptyTest_Unit is Test {
     bytes32 proof = 0xceeae64152a2deaf8c661fccd5645458ba20261b16d2f6e090fe908b0ac9ca88;
     address claimer = 0x185a4dc360CE69bDCceE33b3784B0282f7961aea;
 
+    // Types need to follow the alphabetical order of the json keys!
+    struct ProofToTest {
+        address _address;
+        bytes32 _leaf;
+        bytes32 _proof;
+        uint256 _value;
+    }
+
+    struct Tmp {
+        bytes32 _address;
+        bytes32 _leaf;
+        bytes32 _proof;
+        bytes32 _value;
+    }
+
     function setUp() public {
         bananaMerkle = new BananaMerkle();
         bananaMerkle.updateRoot(root);
+
+        string memory json = vm.readFile('./test/proofs.json');
+
+        bytes memory _proofs = vm.parseJson(json);
+
+        ProofToTest[] memory proofs = abi.decode(_proofs, (ProofToTest[]));
+
+        emit log_address(proofs[0]._address);
+        emit log_bytes32(proofs[0]._leaf);
+        emit log_bytes32(proofs[0]._proof);
+        emit log_uint(proofs[0]._value);
+        
     }
 
     function test_claimerCanClaimOnce() public {
