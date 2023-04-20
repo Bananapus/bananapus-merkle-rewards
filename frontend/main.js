@@ -13,10 +13,12 @@ document.querySelector("#app").innerHTML = `
   <div>
     <h1>Bananapus Rewards</h1>
     <p>Join the <a href="https://discord.gg/ErQYmth4dS">Discord server</a> to learn more.</p>
-    <button id="connect">Connect</button>
-    <button id="check">Check Rewards</button>
+    <div class="buttons">
+      <button id="connect">Connect</button>
+      <button id="check">Check Rewards</button>
+    </div>
   </div>
-  <div class="card" id="claim"></div>`;
+  <div class="buttons" id="claim"></div>`;
 
 // web3-onboard boilerplate
 const injected = injectedModule();
