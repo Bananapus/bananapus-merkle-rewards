@@ -12,6 +12,9 @@
     "vite": "^4.2.0"
   },
   "dependencies": {
-    "@openzeppelin/merkle-tree": "^1.0.4"
+    "@openzeppelin/merkle-tree": "^1.0.4",
+    "@web3-onboard/core": "^2.16.2",
+    "@web3-onboard/injected-wallets": "^2.8.4",
+    "ethers": "^6.3.0"
   }
 }
