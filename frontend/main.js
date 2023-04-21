@@ -1,10 +1,11 @@
 import "./style.css";
 import * as trees from "./assets/trees.json";
 import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
+import { ethers } from "ethers";
 
 import Onboard from "@web3-onboard/core";
 import injectedModule from "@web3-onboard/injected-wallets";
-import { ethers } from "ethers";
+import gnosisModule from "@web3-onboard/gnosis";
 
 let wallets, address, ethersProvider, ethersSigner;
 
@@ -21,9 +22,8 @@ document.querySelector("#app").innerHTML = `
   <div class="buttons" id="claim"></div>`;
 
 // web3-onboard boilerplate
-const injected = injectedModule();
 const onboard = Onboard({
-  wallets: [injected],
+  wallets: [injectedModule(), gnosisModule()],
   chains: [
     {
       id: "0x1",
@@ -50,6 +50,14 @@ const onboard = Onboard({
       rpcUrl: import.meta.env.VITE_ARBITRUM_RPC_URL,
     },
   ],
+  appMetadata: {
+    name: "Bananapus Rewards",
+    icon: "/logo.svg",
+    description: "Welcome to the Bananapus rewards portal.",
+  },
+  connect: {
+    iDontHaveAWalletLink: "https://metamask.io/",
+  },
 });
 
 // Connect wallet
@@ -75,7 +83,7 @@ document.getElementById("check").addEventListener("click", () => {
   }
 
   // Clear any existing buttons
-  document.getElementById("claim").textContent = ''
+  document.getElementById("claim").textContent = "";
 
   address = wallets[0]?.accounts[0]?.address;
   console.log(address);
@@ -87,7 +95,7 @@ document.getElementById("check").addEventListener("click", () => {
     for (const [i, v] of tree.entries()) {
       if (v[0] === address) {
         const proof = tree.getProof(i);
-        newClaimer(chainId, v[0], v[1], proof)
+        newClaimer(chainId, v[0], v[1], proof);
         console.log(
           `Proof to claim ${v[1]} tokens on chain ${chainId}:`,
           proof
@@ -99,8 +107,13 @@ document.getElementById("check").addEventListener("click", () => {
 
 // Create claim button
 function newClaimer(chainId, address, amount, proof) {
+  const hexChainId = "0x" + parseInt(chainId).toString(16);
+  const chainName =
+    onboard.state.get().chains.find((c) => c.id === hexChainId).label ??
+    hexChainId;
+
   const claimButton = document.createElement("button");
-  claimButton.innerText = `Claim on 0x${chainId}`;
+  claimButton.innerText = `Claim on ${chainName}`;
 
   claimButton.onclick = async () => {
     if (!ethersSigner) {
@@ -108,18 +121,20 @@ function newClaimer(chainId, address, amount, proof) {
       return;
     }
 
-    console.log("ChainID:", chainId, "CHAINID HEX", parseInt(chainId).toString(16))
-    await onboard.setChain({ chainId: "0x" + parseInt(chainId).toString(16)})
-    console.log(`Claiming ${amount} for ${address} on chain ${chainId} with proof:`, proof)
+    await onboard.setChain({ chainId: hexChainId });
+    console.log(
+      `Claiming ${amount} for ${address} on chain ${hexChainId} with proof:`,
+      proof
+    );
 
     // Placeholder. Once contract is ready, this will claim rewards.
     const txn = await ethersSigner.sendTransaction({
       to: address,
       value: 1,
-    })
+    });
 
-    const receipt = await txn.wait()
-    console.log(receipt)
+    const receipt = await txn.wait();
+    console.log(receipt);
   };
 
   document.getElementById("claim").appendChild(claimButton);

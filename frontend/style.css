@@ -1,12 +1,28 @@
 @font-face {
-  font-family: 'JPN30';
-  src: url('JPN30.woff') format('woff');
+  font-family: "JPN30";
+  src: url("JPN30.woff") format("woff");
 }
 
 :root {
-  font-family: 'JPN30', monospace;
+  font-family: "JPN30", monospace;
   letter-spacing: 0.5rem;
   background-color: #e0c7d7;
+
+  --onboard-font-family-normal: "JPN30", monospace;
+  --onboard-modal-background: #f4f9ff;
+  --onboard-connect-sidebar-background: #b7d1ea;
+  --onboard-modal-backdrop: #d5d5d8;
+  --onboard-modal-box-shadow: 5px 5px #a1a09d;
+  --onboard-modal-border-radius: 1px;
+  --onboard-font-size-5: 1.5rem;
+  --onboard-font-size-6: 1.1rem;
+  --onboard-font-size-7: 1rem;
+  --onboard-wallet-button-border-radius: 2px;
+
+
+  --account-center-border-radius: 2px;
+  --account-center-app-btn-background: #b7d1ea;
+  --account-center-minimized-background: #f4f9ff;
 }
 
 body {
@@ -20,7 +36,7 @@ h1 {
   font-size: 4em;
   display: block;
   padding: 10px 15px;
-  border: 3px dotted ;
+  border: 3px dotted;
 }
 
 p {
@@ -29,7 +45,7 @@ p {
 }
 
 button {
-  font-family: 'JPN30', monospace;
+  font-family: "JPN30", monospace;
   font-size: 2em;
   border-radius: 4px;
   padding: 20px 40px;
