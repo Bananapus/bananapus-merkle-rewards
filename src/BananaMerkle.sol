@@ -3,6 +3,7 @@ pragma solidity ^0.8.19;
 
 import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract BananaMerkle is Ownable {
     error BananaMerkle_AlreadyClaimed();
@@ -15,9 +16,13 @@ contract BananaMerkle is Ownable {
 
     uint256 public blockHeightOfCurrentRoot;
 
+    IERC20 public immutable claiableToken;
+
     mapping(address _claimer=>uint256 lastClaimedBlockNumber) public lastClaimOf;
 
-    constructor() {}
+    constructor(IERC20 _claiableToken) {
+        claiableToken = _claiableToken;
+    }
 
     function claim(uint256 amount, bytes32[] calldata proof) external {
         // Has already claimed during this period?
@@ -31,8 +36,9 @@ contract BananaMerkle is Ownable {
         lastClaimOf[msg.sender] = block.number;
 
         // Transfer token or start vesting
-
-        // -- insert here --
+       claiableToken.transfer(msg.sender, amount);
+ 
+        //TODO vesting logic
 
         // Some event 
         emit Claimed(msg.sender, amount);

@@ -3,6 +3,7 @@ pragma solidity ^0.8.19;
 
 import { Test, stdJson } from "forge-std/Test.sol";
 import {BananaMerkle} from "../src/BananaMerkle.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract EmptyTest_Unit is Test {
     using stdJson for string;
@@ -11,9 +12,10 @@ contract EmptyTest_Unit is Test {
     BananaMerkle bananaMerkle;
 
 // values from https://github.com/Anish-Agnihotri/merkle-airdrop-starter/blob/master/contracts/src/test/utils/MerkleClaimERC20Test.sol
-    bytes32 root = 0xd0aa6a4e5b4e13462921d7518eebdb7b297a7877d6cfe078b0c318827392fb55; // 100e18 tokens for 
-    bytes32 proof = 0xceeae64152a2deaf8c661fccd5645458ba20261b16d2f6e090fe908b0ac9ca88;
+    bytes32 root = 0x374a314108b4a389873020c193eb0d62b176621994066d9807a58bea989eadd1; // 100e18 tokens for 
+    bytes32 proof = 0xfd665914581601e397da362d118f4ea98e57f511560e08a29855cfbb4c663f70;
     address claimer = 0x185a4dc360CE69bDCceE33b3784B0282f7961aea;
+    address token = 0x3abF2A4f8452cCC2CF7b4C1e4663147600646f66; // just teporary
 
     // Types need to follow the alphabetical order of the json keys!
     struct ProofToTest {
@@ -31,10 +33,11 @@ contract EmptyTest_Unit is Test {
     }
 
     function setUp() public {
-        bananaMerkle = new BananaMerkle();
+        bananaMerkle = new BananaMerkle(IERC20(token));
         bananaMerkle.updateRoot(root);
 
         string memory json = vm.readFile('./test/proofs.json');
+        emit log_string(json);
 
         bytes memory _proofs = vm.parseJson(json);
 
