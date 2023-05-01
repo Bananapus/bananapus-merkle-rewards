@@ -3,6 +3,7 @@ pragma solidity ^0.8.19;
 
 import { Test, stdJson } from "forge-std/Test.sol";
 import {BananaMerkle} from "../src/BananaMerkle.sol";
+import "../src/mock/MockERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract EmptyTest_Unit is Test {
@@ -11,11 +12,11 @@ contract EmptyTest_Unit is Test {
 
     BananaMerkle bananaMerkle;
 
-// values from https://github.com/Anish-Agnihotri/merkle-airdrop-starter/blob/master/contracts/src/test/utils/MerkleClaimERC20Test.sol
-    bytes32 root = 0x374a314108b4a389873020c193eb0d62b176621994066d9807a58bea989eadd1; // 100e18 tokens for 
-    bytes32 proof = 0xfd665914581601e397da362d118f4ea98e57f511560e08a29855cfbb4c663f70;
-    address claimer = 0x185a4dc360CE69bDCceE33b3784B0282f7961aea;
-    address token = 0x3abF2A4f8452cCC2CF7b4C1e4663147600646f66; // just teporary
+    bytes32 root = 0xa178a1ba718a2a1ade417f90e7ca571a7fff4707a3639b4932bdddc73659f1ff; 
+    bytes32 proof = 0x92c2d04bc90e18ae21acc135a7bc01e36e33ebc5b931163ecd81fd4508fa01f9;
+    address claimer = 0x30670D81E487c80b9EDc54370e6EaF943B6EAB39;
+    MockERC20 token;
+    uint256 claimAmount = 9523809523809523809;
 
     // Types need to follow the alphabetical order of the json keys!
     struct ProofToTest {
@@ -33,6 +34,7 @@ contract EmptyTest_Unit is Test {
     }
 
     function setUp() public {
+        token = new MockERC20(100_000 ether);
         bananaMerkle = new BananaMerkle(IERC20(token));
         bananaMerkle.updateRoot(root);
 
@@ -47,7 +49,6 @@ contract EmptyTest_Unit is Test {
         emit log_bytes32(proofs[0]._leaf);
         emit log_bytes32(proofs[0]._proof);
         emit log_uint(proofs[0]._value);
-        
     }
 
     function test_claimerCanClaimOnce() public {
@@ -55,11 +56,11 @@ contract EmptyTest_Unit is Test {
         _proof[0] = proof;
 
         vm.prank(claimer);
-        bananaMerkle.claim(100e18, _proof);
+        bananaMerkle.claim(claimAmount, _proof);
 
         vm.prank(claimer);
         vm.expectRevert(abi.encodeWithSelector(BananaMerkle.BananaMerkle_AlreadyClaimed.selector));
-        bananaMerkle.claim(100e18, _proof);
+        bananaMerkle.claim(claimAmount, _proof);
     }
 
     function test_nonClaimerCannotClaim() public {
@@ -68,6 +69,6 @@ contract EmptyTest_Unit is Test {
 
         vm.prank(address(123));
         vm.expectRevert(abi.encodeWithSelector(BananaMerkle.BananaMerkle_NothingToClaim.selector));
-        bananaMerkle.claim(100e18, _proof);
+        bananaMerkle.claim(claimAmount, _proof);
     }
 }
