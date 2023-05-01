@@ -16,7 +16,7 @@ for (const [chainId, tree_object] of Object.entries(trees)) {
       address: v[0],
       value: v[1],
       leaf: proof[0],
-      proof: proof[1],
+      proof,
     });
   }
 }
