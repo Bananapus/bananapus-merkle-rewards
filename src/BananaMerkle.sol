@@ -29,14 +29,14 @@ contract BananaMerkle is Ownable {
         if (lastClaimOf[msg.sender] >= blockHeightOfCurrentRoot) revert BananaMerkle_AlreadyClaimed();
 
         // Check if in the tree
-        bytes32 msgSenderLeaf = keccak256(abi.encodePacked(msg.sender, amount));
+        bytes32 msgSenderLeaf = keccak256(bytes.concat(keccak256(abi.encode(msg.sender, amount))));
         if(!MerkleProof.verifyCalldata(proof, currentRoot, msgSenderLeaf)) revert BananaMerkle_NothingToClaim();
 
         // Update last claimed block number
         lastClaimOf[msg.sender] = block.number;
 
         // Transfer token or start vesting
-       claiableToken.transfer(msg.sender, amount);
+        // claiableToken.transfer(msg.sender, amount);
  
         //TODO vesting logic
 

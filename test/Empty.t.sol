@@ -12,11 +12,15 @@ contract EmptyTest_Unit is Test {
 
     BananaMerkle bananaMerkle;
 
-    bytes32 root = 0xa178a1ba718a2a1ade417f90e7ca571a7fff4707a3639b4932bdddc73659f1ff; 
-    bytes32 proof = 0x92c2d04bc90e18ae21acc135a7bc01e36e33ebc5b931163ecd81fd4508fa01f9;
-    address claimer = 0x30670D81E487c80b9EDc54370e6EaF943B6EAB39;
+    bytes32 root = 0xa178a1ba718a2a1ade417f90e7ca571a7fff4707a3639b4932bdddc73659f1ff; // 4761904761904761904 tokens for 
+    bytes32[] proof = [
+      bytes32(0x5aec4f2d7e5259a3b6f3d63f1d8c4250d66ba45666f356e403b116f56032a392),
+      bytes32(0x033a2a3dc993fe3b6b3cc3b6732daab111a77d48f5ad78d492110a4c807c2081),
+      bytes32(0x1bd6c175061e5be1e78cf49fcc6d5f1b89225cbfcf568f38f60c52ef141ad42e)
+    ];
+    address claimer = 0x5427B5141A6CC8228A9E74248F51210380adbaE9;
     MockERC20 token;
-    uint256 claimAmount = 9523809523809523809;
+    uint256 claimAmount = 4761904761904761904;
 
     // Types need to follow the alphabetical order of the json keys!
     struct ProofToTest {
@@ -41,19 +45,20 @@ contract EmptyTest_Unit is Test {
         string memory json = vm.readFile('./test/proofs.json');
         emit log_string(json);
 
-        bytes memory _proofs = vm.parseJson(json);
+        // bytes memory _proofs = vm.parseJson(json);
+        // ProofToTest[] memory proofs = abi.decode(_proofs, (ProofToTest[]));
 
-        ProofToTest[] memory proofs = abi.decode(_proofs, (ProofToTest[]));
-
-        emit log_address(proofs[0]._address);
-        emit log_bytes32(proofs[0]._leaf);
-        emit log_bytes32(proofs[0]._proof);
-        emit log_uint(proofs[0]._value);
+        // emit log_address(proofs[0]._address);
+        // emit log_bytes32(proofs[0]._leaf);
+        // emit log_bytes32(proofs[0]._proof);
+        // emit log_uint(proofs[0]._value);
     }
 
     function test_claimerCanClaimOnce() public {
-        bytes32[] memory _proof = new bytes32[](1);
-        _proof[0] = proof;
+        bytes32[] memory _proof = new bytes32[](3);
+        for (uint8 i = 0; i < proof.length; i++) {
+            _proof[i] = proof[i];
+        }
 
         vm.prank(claimer);
         bananaMerkle.claim(claimAmount, _proof);
@@ -64,8 +69,10 @@ contract EmptyTest_Unit is Test {
     }
 
     function test_nonClaimerCannotClaim() public {
-        bytes32[] memory _proof = new bytes32[](1);
-        _proof[0] = proof;
+        bytes32[] memory _proof = new bytes32[](3);
+        for (uint8 i = 0; i < proof.length; i++) {
+            _proof[i] = proof[i];
+        }
 
         vm.prank(address(123));
         vm.expectRevert(abi.encodeWithSelector(BananaMerkle.BananaMerkle_NothingToClaim.selector));
