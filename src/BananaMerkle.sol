@@ -36,7 +36,7 @@ contract BananaMerkle is Ownable {
         lastClaimOf[msg.sender] = block.number;
 
         // Transfer token or start vesting
-        // claiableToken.transfer(msg.sender, amount);
+        claiableToken.transfer(msg.sender, amount);
  
         //TODO vesting logic
 

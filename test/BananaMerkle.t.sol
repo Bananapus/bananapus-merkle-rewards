@@ -6,7 +6,7 @@ import {BananaMerkle} from "../src/BananaMerkle.sol";
 import "../src/mock/MockERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract EmptyTest_Unit is Test {
+contract BananaMerkle_Unit is Test {
     using stdJson for string;
     event Claimed(address indexed claimer, uint256 amount);
 
@@ -41,6 +41,7 @@ contract EmptyTest_Unit is Test {
         token = new MockERC20(100_000 ether);
         bananaMerkle = new BananaMerkle(IERC20(token));
         bananaMerkle.updateRoot(root);
+        token.transfer(address(bananaMerkle), 50_000 ether);
 
         string memory json = vm.readFile('./test/proofs.json');
         emit log_string(json);
@@ -59,9 +60,14 @@ contract EmptyTest_Unit is Test {
         for (uint8 i = 0; i < proof.length; i++) {
             _proof[i] = proof[i];
         }
+        uint256 _tokenBalanceBeforeClaim = token.balanceOf(claimer);
 
         vm.prank(claimer);
         bananaMerkle.claim(claimAmount, _proof);
+
+        uint256 _tokenBalanceAfterClaim = token.balanceOf(claimer);
+        uint256 _diff = _tokenBalanceAfterClaim - _tokenBalanceBeforeClaim;
+        assertEq(_diff, claimAmount);
 
         vm.prank(claimer);
         vm.expectRevert(abi.encodeWithSelector(BananaMerkle.BananaMerkle_AlreadyClaimed.selector));
