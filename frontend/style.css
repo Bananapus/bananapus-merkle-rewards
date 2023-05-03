@@ -3,15 +3,20 @@
   src: url("JPN30.woff") format("woff");
 }
 
-:root {
-  font-family: "JPN30", monospace;
-  letter-spacing: 0.5rem;
-  background-color: #e0c7d7;
+@font-face {
+  font-family: "ANK30";
+  src: url("ANK30.woff") format("woff");
+}
 
-  --onboard-font-family-normal: "JPN30", monospace;
-  --onboard-modal-background: #f4f9ff;
-  --onboard-connect-sidebar-background: #b7d1ea;
-  --onboard-modal-backdrop: #d5d5d8;
+:root {
+  font-family: "ANK30", monospace;
+  background-color: #f0f0f0;
+  color: #2B2B46;
+
+  --onboard-font-family-normal: "ANK30", monospace;
+  --onboard-modal-background: #f0f0f0;
+  --onboard-connect-sidebar-background: #ff8e0c;
+  --onboard-modal-backdrop: #e0e0e0;
   --onboard-modal-box-shadow: 5px 5px #a1a09d;
   --onboard-modal-border-radius: 1px;
   --onboard-font-size-5: 1.5rem;
@@ -19,10 +24,9 @@
   --onboard-font-size-7: 1rem;
   --onboard-wallet-button-border-radius: 2px;
 
-
   --account-center-border-radius: 2px;
-  --account-center-app-btn-background: #b7d1ea;
-  --account-center-minimized-background: #f4f9ff;
+  --account-center-app-btn-background: #f08000;
+  --account-center-minimized-background: #e0e0e0;
 }
 
 body {
@@ -32,26 +36,29 @@ body {
 }
 
 h1 {
+  color: #f08000;
+  font-family: "JPN30", monospace;
+  letter-spacing: 0.5rem;
+  text-decoration: underline 4px;
   text-align: center;
-  font-size: 4em;
-  display: block;
+  font-size: 4.5em;
+  /*display: block;
   padding: 10px 15px;
-  border: 3px dotted;
+  border: 3px dotted;*/
 }
 
 p {
   text-align: center;
-  font-size: 3em;
+  font-size: 2.5em;
 }
 
 button {
-  font-family: "JPN30", monospace;
+  font-family: "ANK30", monospace;
   font-size: 2em;
-  border-radius: 4px;
+  border-radius: 2px;
   padding: 20px 40px;
   margin: 10px;
-  background-color: #b7d1ea;
-  font-style: italic;
+  background-color: #f08000;
   box-shadow: 2px 2px #a1a09d;
 }
 

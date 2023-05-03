@@ -16,6 +16,7 @@ document.querySelector("#app").innerHTML = `
     <p>Join the <a href="https://discord.gg/ErQYmth4dS">Discord server</a> to learn more.</p>
     <div class="buttons">
       <button id="connect">Connect</button>
+      <button id="stake">Stake</button>
       <button id="check">Check Rewards</button>
     </div>
   </div>
@@ -52,7 +53,7 @@ const onboard = Onboard({
   ],
   appMetadata: {
     name: "Bananapus Rewards",
-    icon: "/logo.svg",
+    icon: "/light-icon-round.svg",
     description: "Welcome to the Bananapus rewards portal.",
   },
   connect: {
@@ -74,6 +75,15 @@ document.getElementById("connect").addEventListener("click", async () => {
   }
   console.log(wallets);
 });
+
+document.getElementById("stake").addEventListener("click", async () => {
+  if (!wallets || !wallets[0]?.accounts[0]?.address) {
+    alert("You must connect your wallet.");
+    return;
+  }
+
+  // TODO: Staking functionality
+})
 
 // Check for rewards, and if they exist, create claim buttons
 document.getElementById("check").addEventListener("click", () => {
