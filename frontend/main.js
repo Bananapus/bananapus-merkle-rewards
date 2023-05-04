@@ -1,7 +1,7 @@
 import "./style.css";
 import * as trees from "./assets/trees.json";
 import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
-import { ethers } from "ethers";
+import { ethers, verifyMessage } from "ethers";
 
 import Onboard from "@web3-onboard/core";
 import injectedModule from "@web3-onboard/injected-wallets";
@@ -20,7 +20,7 @@ document.querySelector("#app").innerHTML = `
       <button id="check">Check Rewards</button>
     </div>
   </div>
-  <div class="buttons" id="claim"></div>`;
+  <div class="buttons" id="buttonSection"></div>`;
 
 // web3-onboard boilerplate
 const onboard = Onboard({
@@ -82,7 +82,59 @@ document.getElementById("stake").addEventListener("click", async () => {
     return;
   }
 
-  // TODO: Staking functionality
+  // Clear any elements currently in buttonSection
+  document.getElementById("buttonSection").textContent = "";
+
+  address = wallets[0]?.accounts[0]?.address;
+  console.log(address);
+
+  const amountInput = document.createElement("input")
+  amountInput.name = "amountInput"
+  amountInput.id = "amountInput"
+  amountInput.setAttribute("type", "number")
+  amountInput.setAttribute("placeholder", "123456789")
+
+  const amountLabel = document.createElement("label")
+  amountLabel.innerText = "Amount: "
+  amountLabel.setAttribute("for", "amountInput")
+
+  const currencySpan = document.createElement("span")
+  currencySpan.innerText = " NANA "
+
+  const signButton = document.createElement("button")
+  signButton.innerText = `Sign`;
+
+  signButton.onclick = async () => {
+    if (!ethersSigner) {
+      alert("You must have a signer. Please connect your wallet.");
+      return;
+    }
+
+    const amount = document.getElementById("amountInput").value * 1e18;
+    await onboard.setChain({ chainId: "0x1" });
+    console.log(`Staking ${amount} NANA for ${address}.`);
+
+    const message = JSON.stringify({
+      description: "Staking NANA for Bananapus rewards",
+      timestamp: Math.floor(Date.now() / 1000),
+      amount,
+    }, null, 2)
+
+    sig = await ethersSigner.signMessage(message);
+
+    console.log('sig: ', sig, 'verified: ', verifyMessage(message, sig));
+  }
+  
+  const explainer = document.createElement("p")
+  explainer.style.fontSize = "2em"
+  explainer.innerText = "Enter the number of tokens you would like to stake, and click \"Sign\" to commit to holding that many tokens. As long as you do, you'll continue to qualify for $NANA rewards."
+
+  document.getElementById("buttonSection").appendChild(amountLabel)
+  document.getElementById("buttonSection").appendChild(amountInput)
+  document.getElementById("buttonSection").appendChild(currencySpan)
+  document.getElementById("buttonSection").appendChild(signButton)
+  document.getElementById("buttonSection").appendChild(explainer)
+
 })
 
 // Check for rewards, and if they exist, create claim buttons
@@ -92,8 +144,8 @@ document.getElementById("check").addEventListener("click", () => {
     return;
   }
 
-  // Clear any existing buttons
-  document.getElementById("claim").textContent = "";
+  // Clear any elements currently in buttonSection
+  document.getElementById("buttonSection").textContent = "";
 
   address = wallets[0]?.accounts[0]?.address;
   console.log(address);
@@ -125,7 +177,7 @@ function newClaimer(chainId, address, amount, proof) {
   const claimButton = document.createElement("button");
   claimButton.innerText = `Claim on ${chainName}`;
 
-  claimButton.onclick = async () => {
+  claimButton.onClick = async () => {
     if (!ethersSigner) {
       alert("You must have a signer");
       return;
@@ -147,5 +199,5 @@ function newClaimer(chainId, address, amount, proof) {
     console.log(receipt);
   };
 
-  document.getElementById("claim").appendChild(claimButton);
+  document.getElementById("buttonSection").appendChild(claimButton);
 }
