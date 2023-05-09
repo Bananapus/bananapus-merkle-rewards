@@ -16,25 +16,25 @@ contract BananaMerkle is Ownable {
     event Claimed(address indexed claimer, uint256 amount);
 
     /**
-     * @notice 
+     * @notice
      * current merkle root.
      */
     bytes32 public currentRoot;
 
     /**
-     * @notice 
+     * @notice
      * current block height.
      */
     uint256 public blockHeightOfCurrentRoot;
 
     /**
-     * @notice 
+     * @notice
      * claimable token address.
      */
     IERC20 public immutable claiableToken;
 
     /**
-     * @notice 
+     * @notice
      * user address => lastClaimedBlockNumber.
      */
     mapping(address _claimer => uint256 lastClaimedBlockNumber) public lastClaimOf;
