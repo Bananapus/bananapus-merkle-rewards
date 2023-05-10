@@ -10,7 +10,7 @@ BigInt.prototype.toJSON = function () {
 };
 
 // Ethers provider and JBTokenStore initialization
-const provider = new ethers.JsonRpcProvider(process.env.INFURA_RPC_URL);
+const provider = new ethers.JsonRpcProvider(process.env.JSON_RPC_URL);
 
 const JBTokenStore = new ethers.Contract(
   "0x6FA996581D7edaABE62C15eaE19fEeD4F1DdDfE7",
@@ -47,7 +47,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/", (_, res) => {
-  res.send("<h1>Welcome to the Bananpus API 🍌</h1>");
+  res.status(200).json({ data: "Welcome to the Bananpus API 🍌" });
 });
 
 // Read database
@@ -55,7 +55,18 @@ app.get("/stakers", (_, res) => {
   const sql = "SELECT * from stakers";
   db.all(sql, [], (err, rows) => {
     if (err) res.status(500).json({ error: JSON.stringify(err) });
-    res.send(rows);
+    res.status(200).json({ data: rows });
+  });
+});
+
+// Lookup staker by address
+app.get("/staker/:address", (req, res) => {
+  const address = req.params.address.toLowerCase();
+  const sql = `SELECT * FROM stakers WHERE address = ?`;
+
+  db.get(sql, [address], (err, row) => {
+    if (err) res.status(500).json({ error: err.message });
+    res.status(200).json({ data: row });
   });
 });
 
@@ -86,7 +97,8 @@ app.post("/staker", async (req, res) => {
 
   if (
     isNaN(timestamp) ||
-    Math.abs(Math.floor(Date.now() / 1000) - timestamp) > 60
+    Math.floor(Date.now() / 1000) - timestamp > 60 ||
+    Math.floor(Date.now() / 1000) - timestamp < 0
   )
     return res.status(400).json({ error: "Invalid or old timestamp" });
 
@@ -125,17 +137,6 @@ app.post("/staker", async (req, res) => {
     res
       .status(200)
       .json({ success: `Successfully staked ${amount} $NANA for ${address}.` });
-  });
-});
-
-// Lookup staker by address
-app.get("/staker/:address", (req, res) => {
-  const address = req.params.address.toLowerCase();
-  const sql = `SELECT * FROM stakers WHERE address = ?`;
-
-  db.get(sql, [address], (err, row) => {
-    if (err) res.status(500).json({ error: err.message });
-    res.send(row);
   });
 });
 
