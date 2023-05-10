@@ -12,7 +12,7 @@ Create a .env file with:
 cp .example.env .env
 ```
 
-and enter a valid JSON RPC provider endpoint under for your `JSON_RPC_URL`. Install dependencies with `yarn`, and start the API with `yarn start <port>`.
+and enter a valid JSON RPC provider endpoint under for your `JSON_RPC_URL`. Install dependencies with `yarn`, and start the API with `yarn start`. To run the API on a custom port, run `node . <port_number>`.
 
 ## Endpoints
 
@@ -22,7 +22,7 @@ Returns a welcome message JSON:
 
 ```json
 {
-  data: "Welcome to the Bananpus API 🍌",
+  "data": "Welcome to the Bananpus API 🍌",
 }
 ```
 
@@ -45,7 +45,7 @@ Returns a array of all current stakers.
 }
 ```
 
-### `GET` /staker/<address>
+### `GET` /staker/`<address>`
 
 Returns the staker corresponding to `<address>`
 
@@ -63,7 +63,7 @@ Returns the staker corresponding to `<address>`
 }
 ```
 
-### `GET` /balance/<address>
+### `GET` /balance/`<address>`
 
 Gets $NANA balance for <address> at the current block (does not support ENS).
 
@@ -96,9 +96,9 @@ Creates a new staker.
 
 ```json
 {
-  description: "Staking NANA for Bananapus rewards",
-  timestamp: "1683738072",
-  amount: "70000000000000000000",
+  "description": "Staking NANA for Bananapus rewards",
+  "timestamp": "1683738072",
+  "amount": "70000000000000000000"
 }
 ```
 

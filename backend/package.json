@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "node ."
+    "start": "node . 80"
   },
   "license": "MIT",
   "dependencies": {
