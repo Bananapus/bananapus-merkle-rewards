@@ -79,3 +79,30 @@ button:hover {
 #buttonSection {
   margin-top: 20px;
 }
+
+dialog {
+  max-width: 600px;
+  background-color: #e0e0e0;
+  overflow-wrap: break-word;
+}
+
+dialog button {
+  margin: auto;
+}
+
+dialog::backdrop {
+  background: #f0f0f0;
+}
+
+table {
+  font-size: 2em;
+  border-collapse: collapse; /* Necessary for border styling */
+  background-color: #e0e0e0;
+  margin: 20px auto;
+}
+
+th, td {
+  border: 1px solid #2B2B46;
+  padding: 10px;
+  text-align: left;
+}

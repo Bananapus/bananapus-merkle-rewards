@@ -136,7 +136,7 @@ app.post("/staker", async (req, res) => {
     }
     res
       .status(200)
-      .json({ success: `Successfully staked ${amount} $NANA for ${address}.` });
+      .json({ data: `Successfully staked ${ethers.formatUnits(amount, 18)} $NANA for ${address}.` });
   });
 });
 

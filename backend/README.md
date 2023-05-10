@@ -122,5 +122,4 @@ const signature = await ethers_signer.signMessage(message);
 
 - DB backups
 - Build tree from db
-- Error handling in frontend
 - Claim from contract in frontend
