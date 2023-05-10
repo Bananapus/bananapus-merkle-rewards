@@ -110,19 +110,32 @@ document.getElementById("stake").addEventListener("click", async () => {
       return;
     }
 
-    const amount = document.getElementById("amountInput").value * 1e18;
+    const amount = String(document.getElementById("amountInput").value) + "000000000000000000"
     await onboard.setChain({ chainId: "0x1" });
     console.log(`Staking ${amount} NANA for ${address}.`);
+    const timestamp = String(Math.floor(Date.now() / 1000))
 
     const message = JSON.stringify({
       description: "Staking NANA for Bananapus rewards",
-      timestamp: Math.floor(Date.now() / 1000),
+      timestamp, 
       amount,
     }, null, 2)
 
-    sig = await ethersSigner.signMessage(message);
+    const signature = await ethersSigner.signMessage(message);
+    console.log('signature: ', signature, 'verified: ', verifyMessage(message, signature));
 
-    console.log('sig: ', sig, 'verified: ', verifyMessage(message, sig));
+    await fetch(`${import.meta.env.VITE_BANANAPUS_API_URL}/staker`, {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      body: JSON.stringify({
+        address,
+        timestamp,
+        amount,
+        signature,
+      })
+    }).then(res => res.json())
+    .then(json => console.log(json))
+
   }
   
   const explainer = document.createElement("p")
