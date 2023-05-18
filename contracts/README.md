@@ -22,7 +22,7 @@ use `yarn tree` to generate a Solidity dependency tree
 
 <br>
 
-use `yarn deploy:mainnet` and `yarn deploy:goerli` to deploy and verify (see .env.example for required env vars, using a ledger by default).
+use `yarn deploy:mainnet` and `yarn deploy:goerli` to deploy and verify (see .example.env for required env vars, using a ledger by default).
 
 ## Code coverage
 Run `yarn coverage`to display code coverage summary and generate an LCOV report
