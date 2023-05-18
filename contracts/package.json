@@ -13,6 +13,7 @@
     "doc": "forge doc",
     "deploy:mainnet": "source .env && forge script DeployMainnet --broadcast --network mainnet --rpc-url $RPC_MAINNET --verify --ledger --sender $SENDER_MAINNET",
     "deploy:goerli": "source .env && forge script DeployGoerli --broadcast --network mainnet --rpc-url $RPC_GOERLI --verify --ledger --sender $SENDER_GOERLI",
+    "deploy:polygon": "source .env && forge script DeployPolygon --broadcast --network mainnet --rpc-url $RPC_POLYGON --verify --ledger --sender $SENDER_POLYGON",
     "tree": "forge tree",
     "lint": "forge fmt"
   }

@@ -18,3 +18,11 @@ contract DeployGoerli is Script {
         vm.broadcast();
     }
 }
+
+contract DeployPolygon is Script {
+    function setUp() public {}
+
+    function run() public {
+        vm.broadcast();
+    }
+}
