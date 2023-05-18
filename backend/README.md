@@ -14,6 +14,18 @@ cp .example.env .env
 
 and enter a valid JSON RPC provider endpoint under for your `JSON_RPC_URL`. Install dependencies with `yarn`, and start the API with `yarn start`. To run the API on a custom port, run `node . <port_number>`.
 
+The applications stores data in `stakers.db`. I recommend using the [sqlite3 CLI](https://www.sqlite.org/cli.html) to back this up:
+
+```bash
+# Edit cronjobs
+crontab -e
+```
+
+```cron
+# Back up to `backup.db` every 10 minutes.
+*/10 * * * * sqlite3 -line stakers.db '.backup backup.db'
+```
+
 ## Endpoints
 
 ### `GET` /
@@ -120,6 +132,5 @@ const signature = await ethers_signer.signMessage(message);
 
 **TODO:**
 
-- DB backups
 - Build tree from db
 - Claim from contract in frontend
